@@ -1,0 +1,62 @@
+body {
+    background: linear-gradient(#0a0a0a, #242424);
+    background-size: cover;
+    background-repeat: no-repeat;
+    color: green;
+    height: 100vh;
+}
+
+header {
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+}
+
+.spacer {
+    justify-content: left;
+}
+
+.links {
+    display: flex;
+    justify-content: center;
+    width: 60%;
+}
+
+.links a {
+    padding: 20px;
+    transition: all 500ms ease-in-out;
+    font-size: 20px;
+    justify-content: center;
+}
+
+.links a:hover {
+    transform: scale(1.2);
+    transition: all 500ms ease-in-out;
+}
+
+.spacer, .acct_btns {
+    width: 20%;
+    display: flex;
+    justify-content: center;
+}
+
+.acct_btns {
+    display: flex;
+}
+
+.acct_btns a {
+    padding: 20px;
+    background-color: green;
+    color: white;
+    height: 5px;
+    width: 50px;
+    border-radius: 20px;
+    /* why not working? */
+    justify-content: right;
+    transition: all 500ms ease-in-out;
+}
+
+.acct_btns a:hover {
+    transform: scale(1.2);
+    transition: all 500ms ease-in-out;
+}
