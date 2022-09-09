@@ -27,11 +27,18 @@ header {
     transition: all 500ms ease-in-out;
     font-size: 20px;
     justify-content: center;
+    text-decoration: none;
 }
 
 .links a:hover {
     transform: scale(1.2);
     transition: all 500ms ease-in-out;
+    text-decoration: none;
+}
+
+.links a:visited {
+    text-decoration: none;
+    color: green;
 }
 
 .spacer, .acct_btns {
@@ -54,9 +61,57 @@ header {
     /* why not working? */
     justify-content: right;
     transition: all 500ms ease-in-out;
+    text-decoration: none;
 }
 
 .acct_btns a:hover {
     transform: scale(1.2);
     transition: all 500ms ease-in-out;
+    text-decoration: none;
+}
+
+.acct_btns a:visited {
+    text-decoration: none;
+}
+
+.new_port {
+    display: block;
+
+}
+
+.new_port input {
+    width: 240px;
+    padding: 10px;
+}
+
+#port_page {
+    margin-inline: auto;
+    text-align: center;
+    width: 60%;
+}
+
+.stock_input label {
+    text-align: right;
+    padding-right: 10px;
+    align-self: center;
+	max-width: 25%;
+	flex-basis: 25%;
+}
+
+.stock_input input {
+	max-width: 75%;
+	flex-basis: 75%;
+}
+
+.stock_input {
+    display: flex;
+}
+
+#credit_to_alpha {
+    size: 20px; 
+    max-width: 62.5%;
+}
+
+#source {
+    display: block;
 }
