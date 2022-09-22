@@ -1,35 +1,77 @@
 (function() {
   window.addEventListener('load', init);
   const APIkey = "TLUYLC7Y5VCCJC9A"; 
+  let totalPortfolioValue = 0; 
+  let stockIteration = 0; 
 
   function init() {
+    document.getElementById('new_portfolio').addEventListener('click', buildNewPortfolio);
     document.getElementById('submission').addEventListener('click', function(el) {
-      console.log("test1");
       el.preventDefault();
-      console.log("test2");
       showStock();
     }); 
+    document.getElementById('add_stock').addEventListener('click', function(el) {
+      el.preventDefault(); 
+      addNewStockInput('ticker', 'Stock:');
+      addNewStockInput('amount', 'Amount:'); 
+      addNewStockInput('date', 'Date:'); 
+    })
   }
+
+  function buildNewPortfolio() {
+    let newPort = document.querySelector('.new_port');
+    newPort.style['display'] = 'block';
+    let newBtn = document.querySelector('#new_portfolio');
+    newBtn.style['display'] = 'none';
+  }
+
+  function addNewStockInput(value, displayedText) {
+    let input = document.createElement('div'); 
+    input.classList.add('stock_input');
+    let inptLabel = document.createElement('label');
+    inptLabel.for = value;
+    inptLabel.textContent = displayedText; 
+    input.appendChild(inptLabel);
+    let actualInput = document.createElement('input');
+    actualInput.type = 'text';
+    actualInput.classList.add(value); 
+    input.appendChild(actualInput); 
+    let stockContainer = document.getElementById('stocks_container');
+    stockContainer.appendChild(input);
+  }
+
 
   function showStock() {
     console.log("Trying to get Stock");
-    let symbol = document.getElementById("ticker").value;
-    console.log("This was the reported value: " + symbol);
-    let URL = "https://www.alphavantage.co/query?function=TIME_SERIES_WEEKLY_ADJUSTED&symbol=" + symbol + "&apikey=" + APIkey;
-    fetch(URL)
-      .then(statusCheck)
-      .then(res => res.json())
-      .then(calculateStock)
+    let symbols = document.querySelectorAll(".ticker");
+    stockIteration = symbols.length - 1; 
+    for (let i = stockIteration; i >= 0; i--) {
+      let symbol = symbols[i].value; 
+      console.log("This was the reported value: " + symbol);
+      let URL = "https://www.alphavantage.co/query?function=TIME_SERIES_WEEKLY_ADJUSTED&symbol=" + symbol + "&apikey=" + APIkey;
+      console.log("URL: " + URL)
+      fetch(URL)
+        .then(statusCheck)
+        .then(res => res.json())
+        .then(calculateStock)
+        .catch(handleErr);
+    }
   }
 
   function calculateStock(response) {
+    console.log("this was the stock symbol"); 
+    let symbolizer = document.querySelectorAll(".ticker");
+    console.log(symbolizer[stockIteration].value);
+    console.log('this was supposed to be the response....');
     console.log(response);
-    // let length=0;
-    //  if(response){       
-    //     length=JSON.stringify(response).length;
-    //  }
-    // console.log("length: " + length);
-    let date = document.getElementById("date").value; 
+    let dates = document.querySelectorAll(".date"); 
+    console.log("this was the date array")
+    console.log(dates)
+    console.log("this was the stock iteration");
+    console.log(stockIteration); 
+    let date = dates[stockIteration].value; 
+    console.log("this was supposed to be the date lol");
+    console.log(date);
     let dateArray = date.split('-');
     let year = dateArray[0];
     let month = dateArray[1];
@@ -60,30 +102,55 @@
     console.log(Object.keys(updatedInfo)[minIndex])
     console.log(updatedInfo[Object.keys(updatedInfo)[minIndex]]);
     let adjClose = updatedInfo[Object.keys(updatedInfo)[minIndex]]['5. adjusted close']
-    let startMoney = document.getElementById('amount').value;
-    let symbol = document.getElementById("ticker").value;
+    let amounts = document.querySelectorAll('.amount')
+    let startMoney = amounts[stockIteration].value; 
+    let symbols = document.querySelectorAll('.ticker'); 
+    let symbol = symbols[stockIteration].value;
     console.log("today ")
     console.log(updatedInfo[Object.keys(updatedInfo)[0]]);
-    let marketPrice = updatedInfo[Object.keys(updatedInfo)[0]]['5. adjusted close'];
+    let marketPrice = updatedInfo[Object.keys(updatedInfo)[stockIteration]]['5. adjusted close'];
     let investmentValue = ((startMoney / adjClose) * marketPrice);
+    totalPortfolioValue += investmentValue; 
     investmentValue = investmentValue.toFixed(2); 
     console.log("Your investment in " + symbol + " would be worth approximately $" + investmentValue + " today...")
     console.log("Your Money Multiplier would have been: " + (investmentValue / startMoney).toFixed(1) + "x more than your initial investment!")
     // 5. adjusted close:
 
-    console.log(length);
-    console.log("this is the most recent week's info");
-    console.log();
+    console.log("We finished this round");
+    console.log("Total Port Value was this: $" + totalPortfolioValue.toFixed(2));
+    stockIteration = stockIteration - 1; 
+    console.log("THIS WAS THE STOCK ITERATION: " + stockIteration);
+    if (stockIteration === -1) {
+      let divArray = document.querySelectorAll(".stock_input"); 
+      console.log(divArray)
+      let totalP = document.createElement('p');
+      let finalPortValue = totalPortfolioValue.toFixed(2); 
 
-    // var test = JSON.parse(updatedInfo);
-    // console.log(test);
-    // console.log("big walk");
-    // console.log(updatedInfo['2010-07-09']);
-    // console.log(response['Weekly Adjusted Time Series'][1]);
-    // for (let i = 0; i < 500; i++) {
-    //   //console.log(response['Weekly Adjusted Time Series'][i]['5. adjusted close']);
-    // }
+      // HOW TO INSERT COMMAS EASILY?
+
+      // console.log("Digits of the port wasss: " + finalPortValue.length);
+      // if (finalPortValue.length >= 7) {
+      //   for (let i = finalPortValue.length - 6; i >= 0; i--) {
+      //       finalPortValue.charAt(i) = ","
+      //       //finalPortValue = finalPortValue + finalPortValue.charAt(i)
+      //   }
+      //   console.log(finalPortValue); 
+      // }
+      totalP.textContent = "Your investment would be worth: $" + finalPortValue + " in today's market..."; 
+      console.log(totalP);
+      for (let i = 0; i < divArray.length; i++) {
+        let curr = divArray[i]; 
+        console.log(curr); 
+        curr.style.display = "none";
+      }
+      document.getElementById('portfolio_value').appendChild(totalP);
+      let newBtn = document.querySelector('#new_portfolio');
+      newBtn.style['display'] = 'flex';
+      document.getElementById('add_stock').style.display = "none";
+      document.getElementById('submission').style.display = "none";
+    }
   }
+
 
   /**
    * checks the tatus of the response from the Memes API

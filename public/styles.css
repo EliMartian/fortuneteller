@@ -75,8 +75,7 @@ header {
 }
 
 .new_port {
-    display: block;
-
+    display: none;
 }
 
 .new_port input {
@@ -114,4 +113,11 @@ header {
 
 #source {
     display: block;
+}
+
+#port_page {
+    display: block;
+    background-color: #96989a;
+    color: rgb(25, 88, 25);
+    /* -webkit-text-stroke: 0.05px white;  */
 }
