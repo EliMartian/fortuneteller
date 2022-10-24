@@ -51,6 +51,11 @@ header {
     display: flex;
 }
 
+#stock_listeners {
+    display: flex; 
+    justify-content: center;
+}
+
 .acct_btns a {
     padding: 20px;
     background-color: green;
@@ -119,5 +124,22 @@ header {
     display: block;
     background-color: #96989a;
     color: rgb(25, 88, 25);
-    /* -webkit-text-stroke: 0.05px white;  */
+    /* -webkit-text-stroke: 0.5px white;  
+
+    Button attributes:
+    background 
+    border radius
+    box shadow 
+    text (font, weight, etc)
+    padding (2 numbers, 1st = 0.5x the 2nd number)
+    */
+}
+
+#new_portfolio {
+    display: block; 
+    margin-inline: auto;
+}
+
+.remove {
+    display: none;
 }
